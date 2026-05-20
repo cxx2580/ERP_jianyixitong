@@ -28,7 +28,6 @@
         <el-table-column prop="createTime" label="创建时间" width="180"></el-table-column>
         <el-table-column label="操作" width="220" fixed="right">
           <template slot-scope="scope">
-            <el-button size="mini" @click="handleView(scope.row)">查看</el-button>
             <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
             <el-button size="mini" type="danger" @click="handleDelete(scope.row)">删除</el-button>
           </template>
@@ -141,7 +140,6 @@ export default {
       dialogVisible: false,
       dialogTitle: '',
       isEdit: false,
-      isView: false,
       form: {
         id: null,
         orderNo: '',
@@ -213,7 +211,6 @@ export default {
     },
     handleAdd() {
       this.isEdit = false
-      this.isView = false
       this.dialogTitle = '新增订单'
       this.form = {
         id: null,
@@ -227,22 +224,8 @@ export default {
       this.items = []
       this.dialogVisible = true
     },
-    handleView(row) {
-      this.isEdit = false
-      this.isView = true
-      this.dialogTitle = '查看订单'
-      this.$axios.get(`/api/sales-order/get/${row.id}`)
-        .then(res => {
-          if (res.data.code === 200) {
-            this.form = res.data.data.order
-            this.items = res.data.data.items
-            this.dialogVisible = true
-          }
-        })
-    },
     handleEdit(row) {
       this.isEdit = true
-      this.isView = false
       this.dialogTitle = '编辑订单'
       this.$axios.get(`/api/sales-order/get/${row.id}`)
         .then(res => {

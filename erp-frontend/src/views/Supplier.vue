@@ -3,7 +3,7 @@
     <el-card>
       <div slot="header" class="clearfix">
         <span style="font-size: 18px; font-weight: bold;">供应商管理</span>
-        <el-button style="float: right; padding: 3px 0" type="primary" @click="handleAdd">新增供应商</el-button>
+        <el-button class="float-right" type="primary" size="small" @click="handleAdd">新增供应商</el-button>
       </div>
       <div style="margin-bottom: 20px;">
         <el-input v-model="searchName" placeholder="请输入供应商名称" style="width: 300px; margin-right: 10px;"></el-input>

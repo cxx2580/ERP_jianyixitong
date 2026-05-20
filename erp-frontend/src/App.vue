@@ -218,27 +218,49 @@ export default { name: 'App' }
   font-weight: 600;
   font-size: 14px;
   border-radius: var(--radius-sm);
+  padding: 10px 20px;
   transition: all 0.15s ease;
+  letter-spacing: 0.3px;
 }
+.el-button--small { padding: 7px 14px; font-size: 13px; }
+.el-button--mini { padding: 5px 10px; font-size: 12px; }
 .el-button--primary {
   background: var(--color-accent) !important;
   border: 1px solid var(--color-accent) !important;
   color: #fff !important;
-  box-shadow: none;
 }
 .el-button--primary:hover {
   background: var(--color-accent-hover) !important;
   border-color: var(--color-accent-hover) !important;
+  box-shadow: 0 2px 8px rgba(79,110,247,0.25);
+  transform: translateY(-1px);
 }
 .el-button--success {
   background: #17A86B !important;
   border-color: #17A86B !important;
   color: #fff !important;
 }
+.el-button--success:hover {
+  box-shadow: 0 2px 8px rgba(23,168,107,0.25);
+  transform: translateY(-1px);
+}
 .el-button--danger {
   background: #E5534B !important;
   border-color: #E5534B !important;
   color: #fff !important;
+}
+.el-button--danger:hover {
+  box-shadow: 0 2px 8px rgba(229,83,75,0.25);
+  transform: translateY(-1px);
+}
+.el-button--default:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+/* card header float-right buttons */
+.el-card__header .el-button {
+  padding: 8px 18px;
 }
 
 /* ---- Global: Table ---- */
@@ -357,6 +379,9 @@ export default { name: 'App' }
   font-weight: 600;
   font-size: 14px;
 }
+
+/* ---- Utility ---- */
+.float-right { float: right; }
 
 /* ---- Scrollbar ---- */
 ::-webkit-scrollbar { width:6px; }

@@ -137,24 +137,35 @@ export default {
 }
 
 .mid-row {
-  display:grid; grid-template-columns:repeat(3, 1fr); gap:16px; margin-bottom:20px;
+  display:grid; grid-template-columns:repeat(3, 1fr); gap:14px; margin-bottom:20px;
 }
 .alert-card {
-  background:#fff; border-radius:12px; padding:24px 16px; text-align:center;
+  background:#fff; border-radius:12px; padding:18px 12px; text-align:center;
   cursor:pointer; border:1px solid #eef0f5;
   box-shadow:0 1px 2px rgba(0,0,0,0.04);
-  transition:box-shadow 0.2s ease, border-color 0.2s ease;
+  transition:all 0.25s cubic-bezier(0.4,0,0.2,1);
 }
 .alert-card:hover {
-  border-color:#d4dae4;
-  box-shadow:0 1px 3px rgba(0,0,0,0.06);
+  border-color:var(--color-accent);
+  box-shadow:0 4px 20px rgba(79,110,247,0.12);
+  transform:translateY(-4px) scale(1.03);
 }
 .alert-icon-ring {
-  width:44px; height:44px; border-radius:50%; margin:0 auto 10px;
-  display:flex; align-items:center; justify-content:center; font-size:20px;
+  width:38px; height:38px; border-radius:50%; margin:0 auto 8px;
+  display:flex; align-items:center; justify-content:center; font-size:18px;
+  transition:transform 0.25s cubic-bezier(0.4,0,0.2,1);
 }
-.alert-num { font-size:32px; font-weight:700; color:#1a1d26; line-height:1.2; }
-.alert-text { font-size:14px; color:#8b919e; font-weight:550; margin-top:4px; }
+.alert-card:hover .alert-icon-ring {
+  transform:scale(1.15);
+}
+.alert-num {
+  font-size:28px; font-weight:700; color:#1a1d26; line-height:1.2;
+  transition:color 0.25s ease;
+}
+.alert-card:hover .alert-num {
+  color:var(--color-accent);
+}
+.alert-text { font-size:13px; color:#8b919e; font-weight:550; margin-top:3px; }
 
 .chart-section {
   background:#fff; border-radius:12px; padding:20px 24px 16px;

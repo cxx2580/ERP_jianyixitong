@@ -95,14 +95,14 @@ export default { name: 'App' }
 }
 
 #app {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: 100vh;
   background: var(--color-bg);
-  font-weight: 500;
+  font-weight: 550;
   color: var(--color-text);
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.5;
 }
 
@@ -124,7 +124,7 @@ export default { name: 'App' }
   letter-spacing: -0.2px;
 }
 .header-subtitle {
-  color:var(--color-text-muted); font-size:13px; font-weight:450;
+  color:var(--color-text-muted); font-size:14px; font-weight:550;
 }
 
 /* ---- Sidebar ---- */
@@ -144,11 +144,12 @@ export default { name: 'App' }
   margin: 2px 8px;
   border-radius: var(--radius-md);
   font-size: 14px;
-  font-weight: 550;
+  font-weight: 600;
   color: var(--color-text-secondary);
   padding-left: 16px !important;
   transition: all 0.15s ease;
   border-left: 3px solid transparent;
+  font-size: 15px;
 }
 .side-menu .el-menu-item:hover,
 .side-menu .el-submenu__title:hover {
@@ -158,7 +159,7 @@ export default { name: 'App' }
 .side-menu .el-menu-item.is-active {
   background: var(--color-accent-light) !important;
   color: var(--color-accent) !important;
-  font-weight: 650;
+  font-weight: 700;
   border-left: 3px solid var(--color-accent);
 }
 .side-menu .el-submenu .el-menu-item {
@@ -166,7 +167,7 @@ export default { name: 'App' }
   height: 38px;
   line-height: 38px;
   font-size: 14px;
-  font-weight: 520;
+  font-weight: 580;
   border-left: 3px solid transparent;
 }
 .side-menu .el-submenu .el-menu-item.is-active {
@@ -205,16 +206,16 @@ export default { name: 'App' }
 }
 .el-card__header {
   border-bottom: 1px solid var(--color-border-light) !important;
-  font-weight: 650;
+  font-weight: 700;
   color: var(--color-text);
-  font-size: 15px;
+  font-size: 16px;
   padding: 14px 20px !important;
 }
 .el-card__body { padding: 20px !important; }
 
 /* ---- Global: Button ---- */
 .el-button {
-  font-weight: 550;
+  font-weight: 600;
   font-size: 14px;
   border-radius: var(--radius-sm);
   transition: all 0.15s ease;
@@ -245,13 +246,13 @@ export default { name: 'App' }
   border: none !important;
   font-size: 15px !important;
   color: var(--color-text);
-  font-weight: 500;
+  font-weight: 550;
 }
 .el-table::before { display: none !important; }
 .el-table th.el-table__cell {
   background: #f9fafc !important;
   color: var(--color-text-secondary) !important;
-  font-weight: 650 !important;
+  font-weight: 700 !important;
   font-size: 14px !important;
   border-bottom: 1px solid var(--color-border-light) !important;
   padding: 10px 0 !important;
@@ -271,7 +272,7 @@ export default { name: 'App' }
 .el-tag {
   border-radius: 6px !important;
   border: none !important;
-  font-weight: 550;
+  font-weight: 600;
   font-size: 13px;
 }
 .el-tag--success { background: #e6f7ec !important; color: #17A86B !important; }
@@ -339,21 +340,21 @@ export default { name: 'App' }
 /* ---- Global: Form ---- */
 .el-form-item__label {
   color: var(--color-text) !important;
-  font-weight: 550 !important;
+  font-weight: 600 !important;
   font-size: 14px;
 }
 
 .el-input__inner {
-  font-weight: 500 !important;
+  font-weight: 550 !important;
 }
 
 .el-radio__label {
-  font-weight: 500 !important;
+  font-weight: 550 !important;
 }
 
 .el-pagination button,
 .el-pagination .el-pager li {
-  font-weight: 550;
+  font-weight: 600;
   font-size: 14px;
 }
 

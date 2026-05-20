@@ -27,7 +27,7 @@
         <div class="alert-num">{{ summary.lowStockAlerts || 0 }}</div>
         <div class="alert-text">低库存预警</div>
       </div>
-      <div class="alert-card">
+      <div class="alert-card" @click="$router.push('/product')">
         <div class="alert-icon-ring" style="background:#E6F7EC; color:#17A86B;">
           <i class="el-icon-box"></i>
         </div>

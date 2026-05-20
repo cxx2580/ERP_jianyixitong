@@ -9,7 +9,7 @@
         <el-input v-model="searchName" placeholder="请输入产品名称" style="width: 300px; margin-right: 10px;"></el-input>
         <el-button type="primary" @click="searchProducts">搜索</el-button>
       </div>
-      <el-table :data="tableData" border style="width: 100%">
+      <el-table :data="tableData" stripe style="width: 100%">
         <el-table-column prop="productNo" label="产品编号" width="120"></el-table-column>
         <el-table-column prop="productName" label="产品名称" width="180"></el-table-column>
         <el-table-column prop="specification" label="规格" width="150"></el-table-column>

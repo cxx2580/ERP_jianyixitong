@@ -9,7 +9,7 @@
         <el-input v-model="searchName" placeholder="请输入客户名称" style="width: 300px; margin-right: 10px;"></el-input>
         <el-button type="primary" @click="searchCustomers">搜索</el-button>
       </div>
-      <el-table :data="tableData" border style="width: 100%">
+      <el-table :data="tableData" stripe style="width: 100%">
         <el-table-column prop="customerNo" label="客户编号" width="120"></el-table-column>
         <el-table-column prop="customerName" label="客户名称" width="180"></el-table-column>
         <el-table-column prop="contact" label="联系人" width="100"></el-table-column>

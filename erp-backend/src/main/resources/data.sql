@@ -22,3 +22,16 @@ INSERT INTO supplier (supplier_no, supplier_name, contact, phone, email, address
 ('S002', '杭州零件批发商', '刘芳', '13900139002', 'liufang@hzparts.com', '杭州市西湖区', 1),
 ('S003', '东莞材料公司', '陈伟', '13900139003', 'chenwei@dgmaterial.com', '东莞市虎门镇', 1)
 ON DUPLICATE KEY UPDATE supplier_name=VALUES(supplier_name), contact=VALUES(contact), phone=VALUES(phone), email=VALUES(email), address=VALUES(address), status=VALUES(status);
+
+INSERT INTO inventory_record (product_id, product_name, change_type, change_quantity, before_stock, after_stock, related_order_no, operator, remark) VALUES
+(1, '笔记本电脑', 'OUT', 20, 100, 80, 'SO20260413001', '张三', '销售出库'),
+(3, '机械键盘', 'IN', 100, 200, 300, 'PRD001', '赵六', '生产入库'),
+(2, '无线鼠标', 'IN', 50, 500, 550, 'PO20260420001', '李明', '采购入库')
+ON DUPLICATE KEY UPDATE product_name=VALUES(product_name), change_type=VALUES(change_type), change_quantity=VALUES(change_quantity);
+
+INSERT INTO stock_alert_config (product_id, product_name, min_stock, alert_enabled) VALUES
+(1, '笔记本电脑', 30, 1),
+(3, '机械键盘', 50, 1),
+(2, '无线鼠标', 100, 1),
+(4, '显示器', 20, 1)
+ON DUPLICATE KEY UPDATE min_stock=VALUES(min_stock), alert_enabled=VALUES(alert_enabled);

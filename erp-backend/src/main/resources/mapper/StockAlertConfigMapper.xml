@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.erp.mapper.StockAlertConfigMapper">
+    <resultMap id="BaseResultMap" type="com.erp.entity.StockAlertConfig">
+        <id column="id" property="id"/>
+        <result column="product_id" property="productId"/>
+        <result column="product_name" property="productName"/>
+        <result column="min_stock" property="minStock"/>
+        <result column="alert_enabled" property="alertEnabled"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.erp.entity.StockAlertConfig" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO stock_alert_config (product_id, product_name, min_stock, alert_enabled, create_time, update_time)
+        VALUES (#{productId}, #{productName}, #{minStock}, #{alertEnabled}, NOW(), NOW())
+    </insert>
+
+    <update id="update" parameterType="com.erp.entity.StockAlertConfig">
+        UPDATE stock_alert_config SET min_stock = #{minStock}, alert_enabled = #{alertEnabled}, update_time = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <select id="selectByProductId" resultMap="BaseResultMap">
+        SELECT * FROM stock_alert_config WHERE product_id = #{productId}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT * FROM stock_alert_config ORDER BY id
+    </select>
+
+    <select id="selectEnabled" resultMap="BaseResultMap">
+        SELECT * FROM stock_alert_config WHERE alert_enabled = 1 ORDER BY id
+    </select>
+</mapper>

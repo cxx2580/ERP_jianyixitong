@@ -20,6 +20,8 @@ public class SalesOrderService {
     private SalesOrderItemMapper salesOrderItemMapper;
     @Autowired
     private ProductMapper productMapper;
+    @Autowired
+    private InventoryService inventoryService;
 
     @Transactional
     public int add(SalesOrder order, List<SalesOrderItem> items) {
@@ -29,6 +31,9 @@ public class SalesOrderService {
                 item.setOrderId(order.getId());
                 salesOrderItemMapper.insert(item);
                 deductStock(item.getProductId(), item.getQuantity());
+                inventoryService.recordChange(item.getProductId(), item.getProductName(),
+                        "OUT", item.getQuantity(), order.getOrderNo(),
+                        order.getCustomerName(), "销售出库");
             }
         }
         return result;
@@ -49,6 +54,9 @@ public class SalesOrderService {
                 item.setOrderId(order.getId());
                 salesOrderItemMapper.insert(item);
                 deductStock(item.getProductId(), item.getQuantity());
+                inventoryService.recordChange(item.getProductId(), item.getProductName(),
+                        "OUT", item.getQuantity(), order.getOrderNo(),
+                        order.getCustomerName(), "销售出库(编辑更新)");
             }
         }
         return result;
@@ -56,10 +64,14 @@ public class SalesOrderService {
 
     @Transactional
     public int delete(Long id) {
+        SalesOrder order = salesOrderMapper.selectById(id);
         List<SalesOrderItem> items = salesOrderItemMapper.selectByOrderId(id);
         if (items != null) {
             for (SalesOrderItem item : items) {
                 restoreStock(item.getProductId(), item.getQuantity());
+                inventoryService.recordChange(item.getProductId(), item.getProductName(),
+                        "ADJUST", item.getQuantity(), order != null ? order.getOrderNo() : "",
+                        order != null ? order.getCustomerName() : "", "销售订单删除退回");
             }
         }
         salesOrderItemMapper.deleteByOrderId(id);

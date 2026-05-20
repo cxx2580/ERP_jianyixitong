@@ -7,6 +7,7 @@ import axios from 'axios'
 
 Vue.use(ElementUI)
 Vue.prototype.$axios = axios
+Vue.prototype.$http = axios
 
 Vue.config.productionTip = false
 

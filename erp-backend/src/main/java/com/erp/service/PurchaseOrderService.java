@@ -20,6 +20,8 @@ public class PurchaseOrderService {
     private PurchaseOrderItemMapper purchaseOrderItemMapper;
     @Autowired
     private ProductMapper productMapper;
+    @Autowired
+    private InventoryService inventoryService;
 
     @Transactional
     public int add(PurchaseOrder order, List<PurchaseOrderItem> items) {
@@ -29,6 +31,9 @@ public class PurchaseOrderService {
                 item.setOrderId(order.getId());
                 purchaseOrderItemMapper.insert(item);
                 increaseStock(item.getProductId(), item.getQuantity());
+                inventoryService.recordChange(item.getProductId(), item.getProductName(),
+                        "IN", item.getQuantity(), order.getOrderNo(),
+                        order.getSupplierName(), "采购入库");
             }
         }
         return result;
@@ -49,6 +54,9 @@ public class PurchaseOrderService {
                 item.setOrderId(order.getId());
                 purchaseOrderItemMapper.insert(item);
                 increaseStock(item.getProductId(), item.getQuantity());
+                inventoryService.recordChange(item.getProductId(), item.getProductName(),
+                        "IN", item.getQuantity(), order.getOrderNo(),
+                        order.getSupplierName(), "采购入库(编辑更新)");
             }
         }
         return result;
@@ -56,10 +64,14 @@ public class PurchaseOrderService {
 
     @Transactional
     public int delete(Long id) {
+        PurchaseOrder order = purchaseOrderMapper.selectById(id);
         List<PurchaseOrderItem> items = purchaseOrderItemMapper.selectByOrderId(id);
         if (items != null) {
             for (PurchaseOrderItem item : items) {
                 decreaseStock(item.getProductId(), item.getQuantity());
+                inventoryService.recordChange(item.getProductId(), item.getProductName(),
+                        "ADJUST", item.getQuantity(), order != null ? order.getOrderNo() : "",
+                        order != null ? order.getSupplierName() : "", "采购订单删除退库");
             }
         }
         purchaseOrderItemMapper.deleteByOrderId(id);

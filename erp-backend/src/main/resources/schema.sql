@@ -106,3 +106,42 @@ CREATE TABLE IF NOT EXISTS purchase_order_item (
     subtotal DECIMAL(10,2) NOT NULL,
     create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS inventory_record (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    product_id BIGINT NOT NULL,
+    product_name VARCHAR(100) NOT NULL,
+    change_type VARCHAR(20) NOT NULL,
+    change_quantity INT NOT NULL,
+    before_stock INT NOT NULL,
+    after_stock INT NOT NULL,
+    related_order_no VARCHAR(50),
+    operator VARCHAR(50),
+    remark VARCHAR(500),
+    create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS inventory_check (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    check_no VARCHAR(50) NOT NULL UNIQUE,
+    product_id BIGINT NOT NULL,
+    product_name VARCHAR(100) NOT NULL,
+    book_stock INT NOT NULL,
+    actual_stock INT NOT NULL,
+    diff_quantity INT NOT NULL,
+    status INT DEFAULT 0,
+    operator VARCHAR(50),
+    remark VARCHAR(500),
+    create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS stock_alert_config (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    product_id BIGINT NOT NULL,
+    product_name VARCHAR(100) NOT NULL,
+    min_stock INT DEFAULT 0,
+    alert_enabled TINYINT DEFAULT 1,
+    create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

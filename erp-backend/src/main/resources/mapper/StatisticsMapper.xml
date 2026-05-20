@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.erp.mapper.StatisticsMapper">
+
+    <select id="selectSalesTrend" resultType="java.util.HashMap">
+        SELECT DATE_FORMAT(create_time, '%Y-%m') AS month,
+               COALESCE(SUM(total_amount), 0) AS amount
+        FROM sales_order WHERE status = 3
+          AND create_time >= DATE_SUB(NOW(), INTERVAL #{months} MONTH)
+        GROUP BY DATE_FORMAT(create_time, '%Y-%m') ORDER BY month ASC
+    </select>
+
+    <select id="selectCustomerSalesRanking" resultType="java.util.HashMap">
+        SELECT customer_name AS name, COALESCE(SUM(total_amount), 0) AS value
+        FROM sales_order WHERE status = 3
+        GROUP BY customer_id, customer_name ORDER BY value DESC LIMIT #{top}
+    </select>
+
+    <select id="selectOrderStatusCount" resultType="java.util.HashMap">
+        SELECT status AS name, COUNT(*) AS value FROM sales_order GROUP BY status ORDER BY status
+    </select>
+
+    <select id="selectProductSalesRanking" resultType="java.util.HashMap">
+        SELECT soi.product_name AS name, COALESCE(SUM(soi.quantity), 0) AS value
+        FROM sales_order_item soi JOIN sales_order so ON soi.order_id = so.id
+        WHERE so.status = 3 GROUP BY soi.product_id, soi.product_name
+        ORDER BY value DESC LIMIT #{top}
+    </select>
+
+    <select id="countCompletedProduction" resultType="int">
+        SELECT COUNT(*) FROM production_order WHERE status = 2
+    </select>
+
+    <select id="selectProductionQuantity" resultType="java.util.HashMap">
+        SELECT product_name AS name, COALESCE(SUM(quantity), 0) AS value
+        FROM production_order GROUP BY product_id, product_name ORDER BY value DESC
+    </select>
+
+    <select id="selectProductionStatusCount" resultType="java.util.HashMap">
+        SELECT status AS name, COUNT(*) AS value FROM production_order GROUP BY status ORDER BY status
+    </select>
+
+    <select id="selectPurchaseTrend" resultType="java.util.HashMap">
+        SELECT DATE_FORMAT(create_time, '%Y-%m') AS month,
+               COALESCE(SUM(total_amount), 0) AS amount
+        FROM purchase_order WHERE status = 3
+          AND create_time >= DATE_SUB(NOW(), INTERVAL #{months} MONTH)
+        GROUP BY DATE_FORMAT(create_time, '%Y-%m') ORDER BY month ASC
+    </select>
+
+    <select id="selectSupplierPurchaseRanking" resultType="java.util.HashMap">
+        SELECT supplier_name AS name, COALESCE(SUM(total_amount), 0) AS value
+        FROM purchase_order WHERE status = 3
+        GROUP BY supplier_id, supplier_name ORDER BY value DESC LIMIT #{top}
+    </select>
+
+    <select id="selectPurchaseStatusCount" resultType="java.util.HashMap">
+        SELECT status AS name, COUNT(*) AS value FROM purchase_order GROUP BY status ORDER BY status
+    </select>
+
+    <select id="selectInventoryValue" resultType="java.util.HashMap">
+        SELECT product_name AS name, (stock * price) AS value
+        FROM product WHERE status = 1 ORDER BY value DESC
+    </select>
+
+    <select id="selectInventoryTrend" resultType="java.util.HashMap">
+        SELECT DATE_FORMAT(create_time, '%Y-%m-%d') AS day,
+               SUM(CASE WHEN change_type = 'IN' THEN change_quantity ELSE 0 END) AS in_qty,
+               SUM(CASE WHEN change_type = 'OUT' THEN change_quantity ELSE 0 END) AS out_qty
+        FROM inventory_record
+        WHERE create_time >= DATE_SUB(NOW(), INTERVAL #{days} DAY)
+        GROUP BY DATE_FORMAT(create_time, '%Y-%m-%d') ORDER BY day ASC
+    </select>
+
+    <select id="selectLowStockAlerts" resultType="java.util.HashMap">
+        <![CDATA[
+        SELECT p.product_name AS name, p.stock AS value, COALESCE(sac.min_stock, 0) AS threshold
+        FROM product p LEFT JOIN stock_alert_config sac ON p.id = sac.product_id AND sac.alert_enabled = 1
+        WHERE p.status = 1 AND p.stock < COALESCE(sac.min_stock, 0)
+        ORDER BY (COALESCE(sac.min_stock, 0) - p.stock) DESC
+        ]]>
+    </select>
+
+    <select id="getMonthlySales" resultType="double">
+        SELECT COALESCE(SUM(total_amount), 0) FROM sales_order
+        WHERE status = 3 AND DATE_FORMAT(create_time, '%Y-%m') = DATE_FORMAT(NOW(), '%Y-%m')
+    </select>
+
+    <select id="getInventoryTotalValue" resultType="double">
+        SELECT COALESCE(SUM(stock * price), 0) FROM product WHERE status = 1
+    </select>
+
+    <select id="countPendingOrders" resultType="int">
+        SELECT (SELECT COUNT(*) FROM sales_order WHERE status = 0) +
+               (SELECT COUNT(*) FROM purchase_order WHERE status = 0) +
+               (SELECT COUNT(*) FROM production_order WHERE status = 0)
+    </select>
+
+    <select id="countLowStock" resultType="int">
+        <![CDATA[
+        SELECT COUNT(*) FROM product p JOIN stock_alert_config sac ON p.id = sac.product_id
+        WHERE p.status = 1 AND sac.alert_enabled = 1 AND p.stock < sac.min_stock
+        ]]>
+    </select>
+</mapper>

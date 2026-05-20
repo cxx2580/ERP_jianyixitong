@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.erp.mapper.InventoryRecordMapper">
+    <resultMap id="BaseResultMap" type="com.erp.entity.InventoryRecord">
+        <id column="id" property="id"/>
+        <result column="product_id" property="productId"/>
+        <result column="product_name" property="productName"/>
+        <result column="change_type" property="changeType"/>
+        <result column="change_quantity" property="changeQuantity"/>
+        <result column="before_stock" property="beforeStock"/>
+        <result column="after_stock" property="afterStock"/>
+        <result column="related_order_no" property="relatedOrderNo"/>
+        <result column="operator" property="operator"/>
+        <result column="remark" property="remark"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.erp.entity.InventoryRecord" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO inventory_record (product_id, product_name, change_type, change_quantity, before_stock, after_stock, related_order_no, operator, remark, create_time)
+        VALUES (#{productId}, #{productName}, #{changeType}, #{changeQuantity}, #{beforeStock}, #{afterStock}, #{relatedOrderNo}, #{operator}, #{remark}, NOW())
+    </insert>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT * FROM inventory_record WHERE id = #{id}
+    </select>
+
+    <select id="selectList" resultMap="BaseResultMap">
+        SELECT * FROM inventory_record
+        <where>
+            <if test="changeType != null and changeType != ''">
+                AND change_type = #{changeType}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                AND product_name LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+        </where>
+        ORDER BY create_time DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM inventory_record
+        <where>
+            <if test="changeType != null and changeType != ''">
+                AND change_type = #{changeType}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                AND product_name LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+        </where>
+    </select>
+
+    <select id="selectByProductId" resultMap="BaseResultMap">
+        SELECT * FROM inventory_record WHERE product_id = #{productId}
+        ORDER BY create_time DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+</mapper>

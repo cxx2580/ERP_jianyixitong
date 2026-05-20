@@ -16,6 +16,8 @@ public class ProductionOrderService {
     private ProductionOrderMapper productionOrderMapper;
     @Autowired
     private ProductMapper productMapper;
+    @Autowired
+    private InventoryService inventoryService;
 
     @Transactional
     public int add(ProductionOrder order) {
@@ -41,10 +43,14 @@ public class ProductionOrderService {
             if (product != null) {
                 if (order.getStatus() == 2) {
                     product.setStock(product.getStock() + order.getQuantity());
+                    productMapper.update(product);
+                    inventoryService.recordChange(order.getProductId(), order.getProductName(),
+                            "IN", order.getQuantity(), order.getProductionNo(),
+                            order.getResponsiblePerson(), "生产入库");
                 } else if (oldOrder.getStatus() == 2) {
                     product.setStock(product.getStock() - order.getQuantity());
+                    productMapper.update(product);
                 }
-                productMapper.update(product);
             }
         }
         return result;

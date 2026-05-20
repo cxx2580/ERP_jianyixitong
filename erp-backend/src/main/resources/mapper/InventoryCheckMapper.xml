@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.erp.mapper.InventoryCheckMapper">
+    <resultMap id="BaseResultMap" type="com.erp.entity.InventoryCheck">
+        <id column="id" property="id"/>
+        <result column="check_no" property="checkNo"/>
+        <result column="product_id" property="productId"/>
+        <result column="product_name" property="productName"/>
+        <result column="book_stock" property="bookStock"/>
+        <result column="actual_stock" property="actualStock"/>
+        <result column="diff_quantity" property="diffQuantity"/>
+        <result column="status" property="status"/>
+        <result column="operator" property="operator"/>
+        <result column="remark" property="remark"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.erp.entity.InventoryCheck" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO inventory_check (check_no, product_id, product_name, book_stock, actual_stock, diff_quantity, status, operator, remark, create_time, update_time)
+        VALUES (#{checkNo}, #{productId}, #{productName}, #{bookStock}, #{actualStock}, #{diffQuantity}, #{status}, #{operator}, #{remark}, NOW(), NOW())
+    </insert>
+
+    <update id="update" parameterType="com.erp.entity.InventoryCheck">
+        UPDATE inventory_check SET actual_stock = #{actualStock}, diff_quantity = #{diffQuantity}, status = #{status}, remark = #{remark}, update_time = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM inventory_check WHERE id = #{id}
+    </delete>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT * FROM inventory_check WHERE id = #{id}
+    </select>
+
+    <select id="selectList" resultMap="BaseResultMap">
+        SELECT * FROM inventory_check
+        <where>
+            <if test="checkNo != null and checkNo != ''">
+                AND check_no LIKE CONCAT('%', #{checkNo}, '%')
+            </if>
+        </where>
+        ORDER BY create_time DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM inventory_check
+        <where>
+            <if test="checkNo != null and checkNo != ''">
+                AND check_no LIKE CONCAT('%', #{checkNo}, '%')
+            </if>
+        </where>
+    </select>
+</mapper>

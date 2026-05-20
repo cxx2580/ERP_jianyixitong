@@ -100,7 +100,7 @@ export default { name: 'App' }
   -moz-osx-font-smoothing: grayscale;
   height: 100vh;
   background: var(--color-bg);
-  font-weight: 450;
+  font-weight: 500;
   color: var(--color-text);
   font-size: 14px;
   line-height: 1.5;
@@ -144,7 +144,7 @@ export default { name: 'App' }
   margin: 2px 8px;
   border-radius: var(--radius-md);
   font-size: 14px;
-  font-weight: 450;
+  font-weight: 550;
   color: var(--color-text-secondary);
   padding-left: 16px !important;
   transition: all 0.15s ease;
@@ -158,14 +158,15 @@ export default { name: 'App' }
 .side-menu .el-menu-item.is-active {
   background: var(--color-accent-light) !important;
   color: var(--color-accent) !important;
-  font-weight: 600;
+  font-weight: 650;
   border-left: 3px solid var(--color-accent);
 }
 .side-menu .el-submenu .el-menu-item {
   padding-left: 48px !important;
   height: 38px;
   line-height: 38px;
-  font-size: 13px;
+  font-size: 14px;
+  font-weight: 520;
   border-left: 3px solid transparent;
 }
 .side-menu .el-submenu .el-menu-item.is-active {
@@ -173,7 +174,7 @@ export default { name: 'App' }
 }
 .side-menu .el-submenu.is-active > .el-submenu__title {
   color: var(--color-text) !important;
-  font-weight: 500;
+  font-weight: 600;
 }
 .side-menu .el-submenu__icon-arrow {
   color: var(--color-text-muted);
@@ -204,7 +205,7 @@ export default { name: 'App' }
 }
 .el-card__header {
   border-bottom: 1px solid var(--color-border-light) !important;
-  font-weight: 600;
+  font-weight: 650;
   color: var(--color-text);
   font-size: 15px;
   padding: 14px 20px !important;
@@ -213,7 +214,8 @@ export default { name: 'App' }
 
 /* ---- Global: Button ---- */
 .el-button {
-  font-weight: 500;
+  font-weight: 550;
+  font-size: 14px;
   border-radius: var(--radius-sm);
   transition: all 0.15s ease;
 }
@@ -241,15 +243,16 @@ export default { name: 'App' }
 /* ---- Global: Table ---- */
 .el-table {
   border: none !important;
-  font-size: 14px !important;
+  font-size: 15px !important;
   color: var(--color-text);
+  font-weight: 500;
 }
 .el-table::before { display: none !important; }
 .el-table th.el-table__cell {
   background: #f9fafc !important;
   color: var(--color-text-secondary) !important;
-  font-weight: 600 !important;
-  font-size: 13px !important;
+  font-weight: 650 !important;
+  font-size: 14px !important;
   border-bottom: 1px solid var(--color-border-light) !important;
   padding: 10px 0 !important;
 }
@@ -268,8 +271,8 @@ export default { name: 'App' }
 .el-tag {
   border-radius: 6px !important;
   border: none !important;
-  font-weight: 500;
-  font-size: 12px;
+  font-weight: 550;
+  font-size: 13px;
 }
 .el-tag--success { background: #e6f7ec !important; color: #17A86B !important; }
 .el-tag--danger { background: #fef0f0 !important; color: #E5534B !important; }
@@ -336,7 +339,22 @@ export default { name: 'App' }
 /* ---- Global: Form ---- */
 .el-form-item__label {
   color: var(--color-text) !important;
+  font-weight: 550 !important;
+  font-size: 14px;
+}
+
+.el-input__inner {
   font-weight: 500 !important;
+}
+
+.el-radio__label {
+  font-weight: 500 !important;
+}
+
+.el-pagination button,
+.el-pagination .el-pager li {
+  font-weight: 550;
+  font-size: 14px;
 }
 
 /* ---- Scrollbar ---- */

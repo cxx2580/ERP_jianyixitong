@@ -130,10 +130,10 @@ export default {
   align-items:center; justify-content:center; font-size:22px; flex-shrink:0;
 }
 .stat-value {
-  font-size:26px; font-weight:650; color:#1a1d26; letter-spacing:-0.3px; line-height:1.2;
+  font-size:28px; font-weight:700; color:#1a1d26; letter-spacing:-0.3px; line-height:1.2;
 }
 .stat-label {
-  font-size:13px; color:#8b919e; font-weight:500; margin-top:2px;
+  font-size:14px; color:#8b919e; font-weight:550; margin-top:4px;
 }
 
 .mid-row {
@@ -153,14 +153,14 @@ export default {
   width:44px; height:44px; border-radius:50%; margin:0 auto 10px;
   display:flex; align-items:center; justify-content:center; font-size:20px;
 }
-.alert-num { font-size:30px; font-weight:650; color:#1a1d26; line-height:1.2; }
-.alert-text { font-size:13px; color:#8b919e; font-weight:500; margin-top:2px; }
+.alert-num { font-size:32px; font-weight:700; color:#1a1d26; line-height:1.2; }
+.alert-text { font-size:14px; color:#8b919e; font-weight:550; margin-top:4px; }
 
 .chart-section {
   background:#fff; border-radius:12px; padding:20px 24px 16px;
   border:1px solid #eef0f5;
   box-shadow:0 1px 2px rgba(0,0,0,0.04);
 }
-.section-title { font-size:16px; font-weight:600; color:#1a1d26; margin-bottom:8px; }
+.section-title { font-size:17px; font-weight:650; color:#1a1d26; margin-bottom:8px; }
 .chart-box { height:340px; }
 </style>

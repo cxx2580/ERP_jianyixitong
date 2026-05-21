@@ -2,7 +2,7 @@
 
 ## 项目概述
 
-基于 **Spring Boot + Vue + MyBatis** 的前后端分离 ERP 系统，涵盖企业进销存核心业务流程。
+基于 **Spring Boot + Vue + MyBatis** 的前后端分离 ERP 系统，涵盖企业进销存核心业务流程。包含销售管理、生产管理、采购管理、库存管理、物料管理(BOM)、数据统计仪表盘六大模块。
 
 ## 技术栈
 
@@ -17,6 +17,7 @@
 ### 前端
 - Vue 2.6.14
 - Element UI 2.15.14
+- ECharts 6.1.0
 - Vue Router
 - Axios
 
@@ -24,35 +25,41 @@
 
 ```
 ERP_jianyixitong/
-├── erp-backend/                     # 后端项目
+├── erp-backend/
 │   ├── src/main/java/com/erp/
-│   │   ├── ErpApplication.java      # 启动类
-│   │   ├── common/                  # 公共类（Result、PageResult、异常处理）
-│   │   ├── controller/              # 控制器层
-│   │   ├── dto/                     # 数据传输对象
-│   │   ├── entity/                  # 实体类
-│   │   ├── mapper/                  # MyBatis Mapper 接口
-│   │   └── service/                 # 服务层
+│   │   ├── ErpApplication.java
+│   │   ├── common/          # Result, PageResult, GlobalExceptionHandler
+│   │   ├── controller/      # 11 个控制器
+│   │   ├── dto/              # ProductionOrderDTO 等
+│   │   ├── entity/           # 11 个实体类
+│   │   ├── mapper/           # 12 个 Mapper 接口
+│   │   └── service/          # 10 个 Service
 │   ├── src/main/resources/
-│   │   ├── application.yml          # 应用配置
-│   │   ├── mapper/                  # MyBatis XML 映射
-│   │   ├── schema.sql               # 数据库建表脚本
-│   │   └── data.sql                 # 测试数据
+│   │   ├── application.yml
+│   │   ├── mapper/           # MyBatis XML
+│   │   ├── schema.sql        # 建表脚本 (10 表)
+│   │   └── data.sql          # 测试数据
 │   └── pom.xml
-└── erp-frontend/                    # 前端项目
-    ├── public/index.html
-    ├── src/
-    │   ├── main.js                  # 入口文件
-    │   ├── App.vue                  # 主布局（含侧边栏导航）
-    │   ├── router/index.js          # 路由配置
-    │   └── views/                   # 页面组件
-    │       ├── Customer.vue         # 客户管理
-    │       ├── Product.vue          # 产品管理
-    │       ├── SalesOrder.vue       # 销售订单
-    │       ├── Production.vue       # 生产管理
-    │       ├── Supplier.vue         # 供应商管理
-    │       └── PurchaseOrder.vue    # 采购订单
-    └── package.json
+├── erp-frontend/
+│   ├── src/
+│   │   ├── main.js
+│   │   ├── App.vue           # 主布局 (11 个菜单入口)
+│   │   ├── router/index.js
+│   │   └── views/
+│   │       ├── Dashboard.vue       # 首页仪表盘
+│   │       ├── Customer.vue        # 客户管理
+│   │       ├── Product.vue         # 产品管理
+│   │       ├── SalesOrder.vue      # 销售订单 (可创建生产)
+│   │       ├── Production.vue      # 生产管理 (物料清单)
+│   │       ├── Supplier.vue        # 供应商管理
+│   │       ├── PurchaseOrder.vue   # 采购订单
+│   │       ├── Material.vue        # 物料管理 + BOM
+│   │       ├── Inventory.vue       # 库存总览
+│   │       ├── InventoryRecord.vue # 库存流水
+│   │       ├── InventoryCheck.vue  # 库存盘点
+│   │       └── StockAlert.vue      # 低库存预警
+│   └── package.json
+└── migration_v6.sql          # 新增表迁移脚本
 ```
 
 ## 快速开始
@@ -60,30 +67,25 @@ ERP_jianyixitong/
 ### 1. 数据库准备
 
 ```bash
+# 首次使用：执行完整建表+数据脚本
 mysql -u root -p < erp-backend/src/main/resources/schema.sql
 mysql -u root -p < erp-backend/src/main/resources/data.sql
+
+# 已有旧版本数据库：仅执行迁移脚本
+mysql -u root -p < migration_v6.sql
 ```
 
 ### 2. 配置数据库连接
 
-修改 `erp-backend/src/main/resources/application.yml`：
-
-```yaml
-spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/erp_db?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
-    username: root    # 改为你的 MySQL 用户名
-    password: 1234    # 改为你的 MySQL 密码
-```
+修改 `erp-backend/src/main/resources/application.yml`
 
 ### 3. 启动后端
 
 ```bash
 cd erp-backend
 mvn spring-boot:run
+# 运行在 http://localhost:8080
 ```
-
-后端运行在 http://localhost:8080
 
 ### 4. 启动前端
 
@@ -91,119 +93,62 @@ mvn spring-boot:run
 cd erp-frontend
 npm install
 npm run serve
+# 运行在 http://localhost:8081
 ```
-
-前端运行在 http://localhost:8081
 
 ## 功能模块
 
-### 第一部分：销售管理模块
-- 客户管理（新增/编辑/删除/搜索）
-- 产品管理（新增/编辑/删除/搜索）
-- 销售订单管理（订单 + 多产品明细，支持查看/编辑/删除）
+### 销售管理
+- 客户管理 / 产品管理 / 销售订单管理
 - 订单状态：待审核 → 已审核 → 已发货 → 已完成 → 已取消
-- 库存联动：销售出库自动扣减库存
+- 销售出库自动扣减库存 + 写库存流水
+- **销售订单 → 创建生产**：一键跳转生产页
 
-### 第二部分：生产管理模块
-- 生产订单管理（新增/编辑/删除/搜索）
-- 关联产品，自动回填规格/单位/单价
-- 生产状态：计划中 → 生产中 → 已完成 → 已取消
-- 库存联动：生产完成自动增加库存
+### 生产管理
+- 生产订单管理，关联产品自动回填信息
+- 状态：计划中 → 生产中 → 已完成 → 已取消
+- **物料清单**：支持从 BOM 加载 + 手动添加物料
+- 生产完成自动增加产品库存、扣减物料库存 + 写流水
 
-### 第三部分：采购管理模块
-- 供应商管理（新增/编辑/删除/搜索）
-- 采购订单管理（订单 + 多产品明细，支持查看/编辑/删除）
-- 订单状态：待审核 → 已审核 → 已入库 → 已完成 → 已取消
-- 库存联动：采购入库自动增加库存，退库减少库存
+### 采购管理
+- 供应商管理 / 物料管理 / 采购订单管理
+- **物料管理**：原材料 CRUD，库存追踪
+- **BOM 物料清单**：按产品配置所需物料及用量
+- 采购入库自动增加库存 + 写流水
 
-### 后续规划
-- 第四部分：库存管理模块
-- 第五部分：ERP 系统整合
+### 库存管理
+- 库存总览（低库存红色高亮）/ 库存流水 / 库存盘点 / 低库存预警
+- 所有库存变更自动记录流水 (IN/OUT/ADJUST)
+- 盘点差异自动调整库存 + 写流水
 
-## API 接口
+### 数据统计
+- 首页仪表盘：核心指标卡片 + 待办提醒 + 月度销售趋势图
+- 销售/生产/采购/库存 四维统计接口
 
-### 客户接口
-| 方法 | 路径 | 说明 |
-|------|------|------|
-| GET | `/api/customer/list` | 客户列表（分页 + 搜索） |
-| GET | `/api/customer/get/{id}` | 客户详情 |
-| POST | `/api/customer/add` | 新增客户 |
-| POST | `/api/customer/update` | 更新客户 |
-| DELETE | `/api/customer/delete/{id}` | 删除客户 |
+## 数据库表 (10 张)
 
-### 产品接口
-| 方法 | 路径 | 说明 |
-|------|------|------|
-| GET | `/api/product/list` | 产品列表（分页 + 搜索） |
-| GET | `/api/product/get/{id}` | 产品详情 |
-| POST | `/api/product/add` | 新增产品 |
-| POST | `/api/product/update` | 更新产品 |
-| DELETE | `/api/product/delete/{id}` | 删除产品 |
-
-### 销售订单接口
-| 方法 | 路径 | 说明 |
-|------|------|------|
-| GET | `/api/sales-order/list` | 订单列表（分页 + 搜索） |
-| GET | `/api/sales-order/get/{id}` | 订单详情（含明细） |
-| POST | `/api/sales-order/add` | 新增订单 |
-| POST | `/api/sales-order/update` | 更新订单 |
-| DELETE | `/api/sales-order/delete/{id}` | 删除订单 |
-
-### 生产管理接口
-| 方法 | 路径 | 说明 |
-|------|------|------|
-| GET | `/api/production-order/list` | 生产订单列表（分页 + 搜索） |
-| GET | `/api/production-order/get/{id}` | 生产订单详情 |
-| POST | `/api/production-order/add` | 新增生产订单 |
-| POST | `/api/production-order/update` | 更新生产订单 |
-| DELETE | `/api/production-order/delete/{id}` | 删除生产订单 |
-
-### 供应商接口
-| 方法 | 路径 | 说明 |
-|------|------|------|
-| GET | `/api/supplier/list` | 供应商列表（分页 + 搜索） |
-| GET | `/api/supplier/get/{id}` | 供应商详情 |
-| POST | `/api/supplier/add` | 新增供应商 |
-| POST | `/api/supplier/update` | 更新供应商 |
-| DELETE | `/api/supplier/delete/{id}` | 删除供应商 |
-
-### 采购订单接口
-| 方法 | 路径 | 说明 |
-|------|------|------|
-| GET | `/api/purchase-order/list` | 订单列表（分页 + 搜索） |
-| GET | `/api/purchase-order/get/{id}` | 订单详情（含明细） |
-| POST | `/api/purchase-order/add` | 新增订单 |
-| POST | `/api/purchase-order/update` | 更新订单 |
-| DELETE | `/api/purchase-order/delete/{id}` | 删除订单 |
-
-## 数据库表
-
-| 表名 | 说明 | 所属模块 |
-|------|------|----------|
-| `customer` | 客户 | 销售管理 |
-| `product` | 产品 | 销售管理 |
-| `sales_order` | 销售订单 | 销售管理 |
-| `sales_order_item` | 销售订单明细 | 销售管理 |
-| `production_order` | 生产订单 | 生产管理 |
-| `supplier` | 供应商 | 采购管理 |
-| `purchase_order` | 采购订单 | 采购管理 |
-| `purchase_order_item` | 采购订单明细 | 采购管理 |
+| 表名 | 说明 |
+|------|------|
+| `customer` | 客户 |
+| `product` | 产品 |
+| `sales_order` / `sales_order_item` | 销售订单 + 明细 |
+| `production_order` / `production_material` | 生产订单 + 物料消耗 |
+| `supplier` | 供应商 |
+| `purchase_order` / `purchase_order_item` | 采购订单 + 明细 |
+| `material` | 物料/原材料 |
+| `bom` | 产品物料清单 |
+| `inventory_record` | 库存流水 |
+| `inventory_check` | 盘点单 |
+| `stock_alert_config` | 库存预警配置 |
 
 ## 库存联动规则
 
-| 模块 | 操作 | 库存变化 |
-|------|------|----------|
-| 销售订单 | 新增/编辑 | 扣减库存（出库） |
-| 销售订单 | 删除 | 恢复库存（退货） |
-| 生产订单 | 完成 | 增加库存（入库） |
-| 生产订单 | 取消完成 | 减少库存 |
-| 采购订单 | 新增/编辑 | 增加库存（入库） |
-| 采购订单 | 删除 | 减少库存（退库） |
-
-## 注意事项
-
-1. 确保 MySQL 服务已启动
-2. 确保数据库连接配置正确
-3. 新模块的数据库表需要手动执行 DDL（或通过 schema.sql 初始化）
-4. 先启动后端，再启动前端
-5. 前端默认端口 8081，后端默认端口 8080
+| 模块 | 操作 | 效果 |
+|------|------|------|
+| 销售订单 | 新增/编辑 | 产品库存↓ + OUT 流水 |
+| 销售订单 | 删除 | 产品库存↑ + ADJUST 流水 |
+| 生产订单 | 完成 | 产品库存↑ + 物料库存↓ + IN 流水 |
+| 生产订单 | 取消完成 | 退回产品+物料库存 |
+| 采购订单 | 新增/编辑 | 库存↑ + IN 流水 |
+| 采购订单 | 删除 | 库存↓ + ADJUST 流水 |
+| 库存盘点 | 确认差异 | 库存校正 + ADJUST 流水 |

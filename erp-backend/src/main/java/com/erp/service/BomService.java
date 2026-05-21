@@ -26,7 +26,7 @@ public class BomService {
         if (boms != null) {
             for (Bom bom : boms) {
                 bom.setProductId(productId);
-                var m = materialMapper.selectById(bom.getMaterialId());
+                Material m = materialMapper.selectById(bom.getMaterialId());
                 if (m != null) {
                     bom.setMaterialName(m.getMaterialName());
                     bom.setSpecification(m.getSpecification());

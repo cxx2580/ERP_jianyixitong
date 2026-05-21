@@ -19,8 +19,15 @@ public class StockAlertController {
 
     @PostMapping("/config")
     public Result<Void> saveConfig(@RequestBody StockAlertConfig config) {
-        alertService.saveConfig(config);
-        return Result.success();
+        if (config.getProductId() == null) {
+            return Result.error("产品ID不能为空");
+        }
+        try {
+            alertService.saveConfig(config);
+            return Result.success();
+        } catch (Exception e) {
+            return Result.error("保存失败: " + e.getMessage());
+        }
     }
 
     @GetMapping("/config/{productId}")

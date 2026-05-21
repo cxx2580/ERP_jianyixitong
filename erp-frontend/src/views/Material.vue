@@ -128,7 +128,9 @@ export default {
     },
     saveBom() {
       if(!this.bomProductId){ this.$message.warning('请先选择产品'); return }
-      this.$axios.post('/api/material/bom/save',{ productId:this.bomProductId, boms:this.bomItems }).then(res=>{
+      const validItems = this.bomItems.filter(b => b.materialId)
+      if(validItems.length === 0 && this.bomItems.length > 0){ this.$message.warning('请为物料行选择具体物料,或删除空行'); return }
+      this.$axios.post('/api/material/bom/save',{ productId:this.bomProductId, boms:validItems }).then(res=>{
         if(res.data.code===200){ this.$message.success('BOM保存成功'); this.bomVisible=false }
       })
     }

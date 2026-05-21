@@ -20,3 +20,10 @@ node_modules/
 .DS_Store
 Thumbs.db
 .claude/
+
+# Draw.io diagram sources
+*.drawio
+*.drawio.png
+
+# Local data
+data/

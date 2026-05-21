@@ -26,6 +26,8 @@ public class ProductionOrder {
     private Integer status;
     private String responsiblePerson;
     private String remark;
+    private Long salesOrderId;
+    private String salesOrderNo;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
 }

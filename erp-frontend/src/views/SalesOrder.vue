@@ -26,8 +26,9 @@
         </el-table-column>
         <el-table-column prop="remark" label="备注"></el-table-column>
         <el-table-column prop="createTime" label="创建时间" width="180"></el-table-column>
-        <el-table-column label="操作" width="220" fixed="right">
+        <el-table-column label="操作" width="300" fixed="right">
           <template slot-scope="scope">
+            <el-button size="mini" @click="createProduction(scope.row)">创建生产</el-button>
             <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
             <el-button size="mini" type="danger" @click="handleDelete(scope.row)">删除</el-button>
           </template>
@@ -208,6 +209,9 @@ export default {
     getStatusText(status) {
       const texts = ['待审核', '已审核', '已发货', '已完成', '已取消']
       return texts[status] || '未知'
+    },
+    createProduction(row) {
+      this.$router.push({ path:'/production', query:{ salesOrderId:row.id, salesOrderNo:row.orderNo, productId:null } })
     },
     handleAdd() {
       this.isEdit = false

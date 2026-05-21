@@ -46,6 +46,7 @@
               </template>
               <el-menu-item index="/supplier">供应商管理</el-menu-item>
               <el-menu-item index="/purchase-order">采购订单</el-menu-item>
+              <el-menu-item index="/material">物料管理</el-menu-item>
             </el-submenu>
 
             <el-submenu index="inventory">

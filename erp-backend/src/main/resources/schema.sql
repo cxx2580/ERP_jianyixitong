@@ -145,3 +145,44 @@ CREATE TABLE IF NOT EXISTS stock_alert_config (
     create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS material (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    material_no VARCHAR(50) NOT NULL UNIQUE,
+    material_name VARCHAR(100) NOT NULL,
+    specification VARCHAR(100),
+    unit VARCHAR(20),
+    price DECIMAL(10,2) NOT NULL,
+    stock INT DEFAULT 0,
+    status INT DEFAULT 1,
+    create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS bom (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    product_id BIGINT NOT NULL,
+    material_id BIGINT NOT NULL,
+    material_name VARCHAR(100) NOT NULL,
+    specification VARCHAR(100),
+    unit VARCHAR(20),
+    price DECIMAL(10,2) NOT NULL,
+    quantity INT NOT NULL,
+    create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS production_material (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    production_id BIGINT NOT NULL,
+    material_id BIGINT NOT NULL,
+    material_name VARCHAR(100) NOT NULL,
+    specification VARCHAR(100),
+    unit VARCHAR(20),
+    price DECIMAL(10,2) NOT NULL,
+    quantity INT NOT NULL,
+    subtotal DECIMAL(10,2) NOT NULL
+);
+
+-- 如果 production_order 表已存在,请在 Navicat 中手动执行以下两行:
+-- ALTER TABLE production_order ADD COLUMN sales_order_id BIGINT;
+-- ALTER TABLE production_order ADD COLUMN sales_order_no VARCHAR(50);

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.erp.mapper.MaterialMapper">
+    <resultMap id="BaseResultMap" type="com.erp.entity.Material">
+        <id column="id" property="id"/>
+        <result column="material_no" property="materialNo"/>
+        <result column="material_name" property="materialName"/>
+        <result column="specification" property="specification"/>
+        <result column="unit" property="unit"/>
+        <result column="price" property="price"/>
+        <result column="stock" property="stock"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO material (material_no, material_name, specification, unit, price, stock, status, create_time, update_time)
+        VALUES (#{materialNo}, #{materialName}, #{specification}, #{unit}, #{price}, #{stock}, #{status}, NOW(), NOW())
+    </insert>
+
+    <update id="update">
+        UPDATE material SET material_name=#{materialName}, specification=#{specification}, unit=#{unit},
+        price=#{price}, stock=#{stock}, status=#{status}, update_time=NOW() WHERE id=#{id}
+    </update>
+
+    <delete id="deleteById">DELETE FROM material WHERE id=#{id}</delete>
+
+    <select id="selectById" resultMap="BaseResultMap">SELECT * FROM material WHERE id=#{id}</select>
+
+    <select id="selectList" resultMap="BaseResultMap">
+        SELECT * FROM material
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND (material_no LIKE CONCAT('%',#{keyword},'%') OR material_name LIKE CONCAT('%',#{keyword},'%'))
+            </if>
+        </where>
+        ORDER BY create_time DESC LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM material
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND (material_no LIKE CONCAT('%',#{keyword},'%') OR material_name LIKE CONCAT('%',#{keyword},'%'))
+            </if>
+        </where>
+    </select>
+</mapper>

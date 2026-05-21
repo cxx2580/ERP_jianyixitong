@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.erp.mapper.ProductionMaterialMapper">
+    <resultMap id="BaseResultMap" type="com.erp.entity.ProductionMaterial">
+        <id column="id" property="id"/>
+        <result column="production_id" property="productionId"/>
+        <result column="material_id" property="materialId"/>
+        <result column="material_name" property="materialName"/>
+        <result column="specification" property="specification"/>
+        <result column="unit" property="unit"/>
+        <result column="price" property="price"/>
+        <result column="quantity" property="quantity"/>
+        <result column="subtotal" property="subtotal"/>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO production_material (production_id, material_id, material_name, specification, unit, price, quantity, subtotal)
+        VALUES (#{productionId}, #{materialId}, #{materialName}, #{specification}, #{unit}, #{price}, #{quantity}, #{subtotal})
+    </insert>
+
+    <delete id="deleteByProductionId">DELETE FROM production_material WHERE production_id=#{productionId}</delete>
+
+    <select id="selectByProductionId" resultMap="BaseResultMap">
+        SELECT * FROM production_material WHERE production_id=#{productionId} ORDER BY id
+    </select>
+</mapper>

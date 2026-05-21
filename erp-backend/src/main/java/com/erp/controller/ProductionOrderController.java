@@ -2,12 +2,16 @@ package com.erp.controller;
 
 import com.erp.common.PageResult;
 import com.erp.common.Result;
+import com.erp.dto.ProductionOrderDTO;
 import com.erp.entity.ProductionOrder;
+import com.erp.entity.ProductionMaterial;
 import com.erp.service.ProductionOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/production-order")
@@ -18,14 +22,14 @@ public class ProductionOrderController {
     private ProductionOrderService productionOrderService;
 
     @PostMapping("/add")
-    public Result<Void> add(@Valid @RequestBody ProductionOrder order) {
-        productionOrderService.add(order);
+    public Result<Void> add(@RequestBody ProductionOrderDTO dto) {
+        productionOrderService.add(dto.getOrder(), dto.getMaterials());
         return Result.success();
     }
 
     @PostMapping("/update")
-    public Result<Void> update(@Valid @RequestBody ProductionOrder order) {
-        productionOrderService.update(order);
+    public Result<Void> update(@RequestBody ProductionOrderDTO dto) {
+        productionOrderService.update(dto.getOrder(), dto.getMaterials());
         return Result.success();
     }
 
@@ -36,8 +40,11 @@ public class ProductionOrderController {
     }
 
     @GetMapping("/get/{id}")
-    public Result<ProductionOrder> getById(@PathVariable Long id) {
-        return Result.success(productionOrderService.getById(id));
+    public Result<Map<String, Object>> getById(@PathVariable Long id) {
+        Map<String, Object> result = new HashMap<>();
+        result.put("order", productionOrderService.getById(id));
+        result.put("materials", productionOrderService.getMaterials(id));
+        return Result.success(result);
     }
 
     @GetMapping("/list")

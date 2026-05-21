@@ -17,45 +17,32 @@
         <result column="status" property="status"/>
         <result column="responsible_person" property="responsiblePerson"/>
         <result column="remark" property="remark"/>
+        <result column="sales_order_id" property="salesOrderId"/>
+        <result column="sales_order_no" property="salesOrderNo"/>
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
     </resultMap>
 
-    <insert id="insert" parameterType="com.erp.entity.ProductionOrder" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO production_order (production_no, product_id, product_name, specification, unit,
             quantity, price, total_amount, start_date, end_date, actual_end_date,
-            status, responsible_person, remark, create_time, update_time)
+            status, responsible_person, remark, sales_order_id, sales_order_no, create_time, update_time)
         VALUES (#{productionNo}, #{productId}, #{productName}, #{specification}, #{unit},
             #{quantity}, #{price}, #{totalAmount}, #{startDate}, #{endDate}, #{actualEndDate},
-            #{status}, #{responsiblePerson}, #{remark}, NOW(), NOW())
+            #{status}, #{responsiblePerson}, #{remark}, #{salesOrderId}, #{salesOrderNo}, NOW(), NOW())
     </insert>
 
-    <update id="update" parameterType="com.erp.entity.ProductionOrder">
-        UPDATE production_order
-        SET product_id = #{productId},
-            product_name = #{productName},
-            specification = #{specification},
-            unit = #{unit},
-            quantity = #{quantity},
-            price = #{price},
-            total_amount = #{totalAmount},
-            start_date = #{startDate},
-            end_date = #{endDate},
-            actual_end_date = #{actualEndDate},
-            status = #{status},
-            responsible_person = #{responsiblePerson},
-            remark = #{remark},
-            update_time = NOW()
-        WHERE id = #{id}
+    <update id="update">
+        UPDATE production_order SET product_id=#{productId}, product_name=#{productName},
+            specification=#{specification}, unit=#{unit}, quantity=#{quantity}, price=#{price},
+            total_amount=#{totalAmount}, start_date=#{startDate}, end_date=#{endDate},
+            actual_end_date=#{actualEndDate}, status=#{status},
+            responsible_person=#{responsiblePerson}, remark=#{remark}, update_time=NOW()
+        WHERE id=#{id}
     </update>
 
-    <delete id="deleteById">
-        DELETE FROM production_order WHERE id = #{id}
-    </delete>
-
-    <select id="selectById" resultMap="BaseResultMap">
-        SELECT * FROM production_order WHERE id = #{id}
-    </select>
+    <delete id="deleteById">DELETE FROM production_order WHERE id=#{id}</delete>
+    <select id="selectById" resultMap="BaseResultMap">SELECT * FROM production_order WHERE id=#{id}</select>
 
     <select id="selectList" resultMap="BaseResultMap">
         SELECT * FROM production_order
@@ -64,8 +51,7 @@
                 AND production_no LIKE CONCAT('%', #{productionNo}, '%')
             </if>
         </where>
-        ORDER BY create_time DESC
-        LIMIT #{limit} OFFSET #{offset}
+        ORDER BY create_time DESC LIMIT #{limit} OFFSET #{offset}
     </select>
 
     <select id="count" resultType="int">

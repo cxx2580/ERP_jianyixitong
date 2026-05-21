@@ -35,3 +35,21 @@ INSERT INTO stock_alert_config (product_id, product_name, min_stock, alert_enabl
 (2, '无线鼠标', 100, 1),
 (4, '显示器', 20, 1)
 ON DUPLICATE KEY UPDATE min_stock=VALUES(min_stock), alert_enabled=VALUES(alert_enabled);
+
+INSERT INTO material (material_no, material_name, specification, unit, price, stock, status) VALUES
+('M001', 'CPU芯片', 'i5-12400', '颗', 1200.00, 200, 1),
+('M002', '内存条', 'DDR4 16GB', '条', 350.00, 500, 1),
+('M003', '固态硬盘', '512GB NVMe', '块', 280.00, 300, 1),
+('M004', '机械轴体', 'Cherry红轴', '颗', 2.50, 2000, 1),
+('M005', 'PCB板', '104键定制', '块', 45.00, 300, 1),
+('M006', '鼠标微动', '欧姆龙', '个', 3.00, 1000, 1)
+ON DUPLICATE KEY UPDATE material_name=VALUES(material_name), specification=VALUES(specification), unit=VALUES(unit), price=VALUES(price), stock=VALUES(stock), status=VALUES(status);
+
+INSERT INTO bom (product_id, material_id, material_name, specification, unit, price, quantity) VALUES
+(1, 1, 'CPU芯片', 'i5-12400', '颗', 1200.00, 1),
+(1, 2, '内存条', 'DDR4 16GB', '条', 350.00, 2),
+(1, 3, '固态硬盘', '512GB NVMe', '块', 280.00, 1),
+(3, 4, '机械轴体', 'Cherry红轴', '颗', 2.50, 104),
+(3, 5, 'PCB板', '104键定制', '块', 45.00, 1),
+(2, 6, '鼠标微动', '欧姆龙', '个', 3.00, 2)
+ON DUPLICATE KEY UPDATE quantity=VALUES(quantity);

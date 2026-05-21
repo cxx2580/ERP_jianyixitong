@@ -92,14 +92,14 @@
               {{ scope.row.unit }}
             </template>
           </el-table-column>
-          <el-table-column label="单价" width="100">
+          <el-table-column label="单价" width="170">
             <template slot-scope="scope">
-              <el-input-number v-model="scope.row.price" :min="0" :precision="2" size="small" @change="calculateSubtotal(scope.$index)"></el-input-number>
+              <el-input-number v-model="scope.row.price" :min="0" :precision="2" size="small" controls-position="right" @change="calculateSubtotal(scope.$index)"></el-input-number>
             </template>
           </el-table-column>
-          <el-table-column label="数量" width="100">
+          <el-table-column label="数量" width="170">
             <template slot-scope="scope">
-              <el-input-number v-model="scope.row.quantity" :min="1" size="small" @change="calculateSubtotal(scope.$index)"></el-input-number>
+              <el-input-number v-model="scope.row.quantity" :min="1" size="small" controls-position="right" @change="calculateSubtotal(scope.$index)"></el-input-number>
             </template>
           </el-table-column>
           <el-table-column label="小计" width="120">

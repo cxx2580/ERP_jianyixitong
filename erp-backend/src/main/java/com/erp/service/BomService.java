@@ -1,6 +1,7 @@
 package com.erp.service;
 
 import com.erp.entity.Bom;
+import com.erp.entity.Material;
 import com.erp.mapper.BomMapper;
 import com.erp.mapper.MaterialMapper;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -3,6 +3,7 @@ package com.erp.service;
 import com.erp.common.PageResult;
 import com.erp.entity.ProductionOrder;
 import com.erp.entity.ProductionMaterial;
+import com.erp.entity.Material;
 import com.erp.entity.Product;
 import com.erp.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,7 +87,7 @@ public class ProductionOrderService {
         List<ProductionMaterial> materials = materialMapper.selectByProductionId(productionId);
         if (materials != null) {
             for (ProductionMaterial m : materials) {
-                var rawMat = rawMaterialMapper.selectById(m.getMaterialId());
+                Material rawMat = rawMaterialMapper.selectById(m.getMaterialId());
                 if (rawMat != null && m.getQuantity() != null) {
                     rawMat.setStock(rawMat.getStock() - m.getQuantity());
                     rawMaterialMapper.update(rawMat);
@@ -106,7 +107,7 @@ public class ProductionOrderService {
         List<ProductionMaterial> materials = materialMapper.selectByProductionId(productionId);
         if (materials != null) {
             for (ProductionMaterial m : materials) {
-                var rawMat = rawMaterialMapper.selectById(m.getMaterialId());
+                Material rawMat = rawMaterialMapper.selectById(m.getMaterialId());
                 if (rawMat != null && m.getQuantity() != null) {
                     rawMat.setStock(rawMat.getStock() + m.getQuantity());
                     rawMaterialMapper.update(rawMat);
